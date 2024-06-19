@@ -4,7 +4,7 @@ class="d-flex justify-content-between align-items-center list-group-item bg-succ
 (click) = "setRecipeItem()"
 >
 <div class="pull-left w-100">
-  <h4 class="list-group-item-heading">{{ recipeItem.name }}</h4>
+  <h4 class="list-group-item-heading">{{ recipeItem.name | myPipe:recipeItem.name }}</h4>
   <p class="list-group-item-text">{{ recipeItem.description }}</p>
 </div>
 <span class="pull-right">

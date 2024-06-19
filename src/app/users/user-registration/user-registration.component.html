@@ -1,0 +1,125 @@
+<h2 class="mt-2 text-danger">Please Register the user</h2>
+
+<div *ngIf="!isFormReactive; else ReactiveFormForUserReg">
+  <h4>Template driven form</h4>
+  <form #regForm="ngForm" (ngSubmit)="registerUser1(regForm)">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" name="name" ngModel />
+    </div>
+
+    <div class="mb-3">
+      <label for="age" class="form-label">Age</label>
+      <input type="number" class="form-control" id="age" name="age" ngModel />
+    </div>
+
+    <div class="mb-3">
+      <label for="salary" class="form-label">Salary</label>
+      <input
+        type="number"
+        class="form-control"
+        id="salary"
+        name="salary"
+        ngModel
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-check-label">Gender:</label><br />
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="male"
+          name="gender"
+          value="male"
+          ngModel
+        />
+        <label class="form-check-label" for="male">Male</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="femal  e"
+          name="gender"
+          value="female"
+          ngModel
+        />
+        <label class="form-check-label" for="female">Female</label>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!regForm.form.valid"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+<ng-template #ReactiveFormForUserReg>
+  <h1>Reactive Form</h1>
+
+  <form [formGroup]="userRegistationForm" (ngSubmit)="postUserData()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" formControlName="Name" />
+      <span
+        *ngIf="Name && Name.invalid && Name.touched;"
+        class="text-danger"
+        >Please enter the valid details</span
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="age" class="form-label">Age</label>
+      <input type="number" class="form-control" formControlName="Age" />
+      <span
+        *ngIf="Age && Age.invalid && Age.touched;"
+        class="text-danger"
+        >Please enter Age between 16 to 100</span
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="salary" class="form-label">Salary</label>
+      <input type="number" class="form-control" formControlName="Salary" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-check-label">Gender:</label><br />
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="Gender"
+          value="male"
+        />
+        <label class="form-check-label">Male</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="Gender"
+          value="female"
+        />
+        <label class="form-check-label">Female</label>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary m-2"
+      [disabled]="!userRegistationForm.valid"
+    >
+      Submit
+    </button>
+    <button type="button" class="btn btn-warning m-2" (click)="resetForm()">
+      Reset
+    </button>
+  </form>
+</ng-template>

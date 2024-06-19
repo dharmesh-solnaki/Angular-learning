@@ -3,7 +3,7 @@
     <app-shopping-edit ></app-shopping-edit>
     <hr />
     <ul class="list-group">
-      <a class="list-group-item" href="#" *ngFor="let item of ingredients">
+      <a class="list-group-item" href="#" *ngFor="let item of ingredients; trakBy:">
 {{item.name}} ({{item.amount| currency}})
 
       </a>

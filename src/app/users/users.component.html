@@ -1,1 +1,29 @@
 <router-outlet></router-outlet>
+
+<h1>Users in our site is</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <td>Id</td>
+      <td>Name</td>
+      <td>Salary</td>
+      <td>Age</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.id }}</td>
+      <td>{{user.gender| myPipe:'Identify' }}  {{ user.name | myPipe:'Upper' }}</td>
+      <td>{{ user.salary | myPipe:'toCurrency' }}</td>
+      <td>{{ user.age }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+<!-- <button class="btn btn-primary" (click)="addUserToList()">Add User</button> -->
+
+
+<button [routerLink]="['/userReg',0]" class="btn btn-danger m-2">Add User using template driven form</button>
+<button [routerLink]="['/userReg',1]" class="btn btn-success m-2">Add User using reactive form</button>

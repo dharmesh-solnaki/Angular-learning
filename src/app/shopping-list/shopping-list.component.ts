@@ -19,6 +19,8 @@ ingredients:Ingredients[] =[];
   this.shoppinglistservice.IngredientChanged.subscribe((ingredients:Ingredients[])=>{
     this.ingredients=ingredients;
   })
+
+
  }
 
 
