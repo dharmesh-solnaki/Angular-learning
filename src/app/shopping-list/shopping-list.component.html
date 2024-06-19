@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-xs-10">
+    <app-shopping-edit ></app-shopping-edit>
+    <hr />
+    <ul class="list-group">
+      <a class="list-group-item" href="#" *ngFor="let item of ingredients">
+{{item.name}} ({{item.amount| currency}})
+
+      </a>
+    </ul>
+  </div>
+</div>
+
+
+<a [routerLink]="[ '/users' ]" [queryParams] = "{isAlloerd:'myName'}" [fragment]="'Loading...'">name</a>

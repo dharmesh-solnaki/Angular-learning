@@ -1,0 +1,18 @@
+<a
+
+class="d-flex justify-content-between align-items-center list-group-item bg-success bg-opacity-10  p-3 clearfix m-3"
+(click) = "setRecipeItem()"
+>
+<div class="pull-left w-100">
+  <h4 class="list-group-item-heading">{{ recipeItem.name }}</h4>
+  <p class="list-group-item-text">{{ recipeItem.description }}</p>
+</div>
+<span class="pull-right">
+  <img
+    [src]="recipeItem.imagePath"
+    alt="{{ recipeItem.name }}"
+    class="img-responsive"
+    style="width: 6rem;"
+  />
+</span>
+</a>

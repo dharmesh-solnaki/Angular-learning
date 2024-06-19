@@ -1,0 +1,13 @@
+<div class="row mt-4">
+  <div class="col-xs-12">
+    <button class="btn btn-success">New Recipe</button>
+  </div>
+</div>
+<hr>
+<div class="row mt-4">
+  <div class="col-xs-12 ">
+    <!-- (recipeSetter)="setRecipeFromList(item)" -->
+    <app-recipe-items *ngFor="let item of recipes" [recipeItem]='item' 
+    ></app-recipe-items>
+  </div>
+</div>

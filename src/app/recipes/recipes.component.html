@@ -1,0 +1,16 @@
+<ng-content></ng-content>
+
+<div class="row">
+  <div class="col-md-5">
+    <app-reacipe-list ></app-reacipe-list>
+  </div>
+  <div class="col-md-7">
+    <app-reacipe-detail *ngIf="selectedRecipe  else elsebodyforappdetail"  [recipeItem]="selectedRecipe"></app-reacipe-detail>
+    <ng-template #elsebodyforappdetail>
+      <h1 class="mt-5">
+        Please select items first
+      </h1>
+    </ng-template>
+    
+  </div>
+</div>
