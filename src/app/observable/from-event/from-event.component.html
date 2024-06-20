@@ -1,0 +1,37 @@
+<div class="my-5">
+  <h2>from evnt</h2>
+
+  <div class="row mt-5">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Add video</div>
+        <div class="card-body">
+          <button #addBtn class="btn btn-primary">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">List</div>
+        <div class="card-body">
+          <ul id="elContainer"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <h2>please enter the page number to see the users</h2>
+  <input type="text" #searchRef />
+</div>
+
+<div class="row container gap-3">
+  <div class="card text-start col-lg-4" *ngFor="let user of users">
+    <img class="card-img-top" [src]="user.avatar" alt="Title" />
+    <div class="card-body">
+      <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+      <p class="card-text">{{ user.email }}</p>
+    </div>
+  </div>
+</div>

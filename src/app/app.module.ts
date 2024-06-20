@@ -21,6 +21,12 @@ import { MyPipePipe } from './Shared/my-pipe.pipe';
 import { UserService } from './users/user.service';
 import { UserRegistrationComponent } from './users/user-registration/user-registration.component';
 import { CommonGridComponent } from './Shared/common-grid/common-grid.component';
+import { ObservableComponent } from './observable/observable.component';
+import { AllComponent } from './observable/all/all.component';
+import { FromEventComponent } from './observable/from-event/from-event.component';
+import { DesignUtilityService } from './appServices/design-utility.service';
+import { IntervalComponent } from './observable/interval/interval.component';
+import { OfFromComponent } from './observable/of-from/of-from.component';
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
@@ -32,6 +38,15 @@ const appRoutes: Routes = [
   },
   { path: 'userReg/:type', component: UserRegistrationComponent },
   { path: 'ShoppingLists', component: ShoppingListComponent },
+  {
+    path: 'observables',
+    component: ObservableComponent,
+    children: [
+      { path: '', component: AllComponent },
+      { path: 'fromEvent', component: FromEventComponent },
+       { path: 'interval', component: IntervalComponent }, { path: 'ofFrom', component: OfFromComponent },
+    ],
+  },
 ];
 
 @NgModule({
@@ -53,11 +68,19 @@ const appRoutes: Routes = [
     MyPipePipe,
     UserRegistrationComponent,
     CommonGridComponent,
+    ObservableComponent,
+    AllComponent,
+    FromEventComponent,
+    IntervalComponent,
+    OfFromComponent,
   ],
-  imports: [BrowserModule, FormsModule,  ReactiveFormsModule, RouterModule.forRoot(appRoutes)
-    
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes),
   ],
-  providers: [ShoppingListService, UserService],
+  providers: [ShoppingListService, UserService, DesignUtilityService],
   exports: [FormsModule],
   bootstrap: [AppComponent],
 })
