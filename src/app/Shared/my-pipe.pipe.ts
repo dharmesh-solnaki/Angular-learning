@@ -12,8 +12,8 @@ export class MyPipePipe implements PipeTransform {
       case 'Lower':
         return name.toLowerCase();
 
-      case 'Identify':
-        return name == 'male' ? 'Mr.' : 'Ms.';
+      case 'prefix':
+        return name == 'male' ? 'Mr.'.concat(name) : 'Ms.'.concat(name);
         
         case 'toCurrency':
         return  '$'.concat(name);

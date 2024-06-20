@@ -83,4 +83,7 @@ export class UserRegistrationComponent {
       Name: 'New User',
     });
   }
+  onForminvalid(){
+    alert('Please fill the all correct data ')
+  }
 }

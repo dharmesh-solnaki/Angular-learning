@@ -1,0 +1,22 @@
+<table class="table table-responsive">
+  <thead>
+    <tr>
+      <th *ngFor="let col of columns">{{ col }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of data">
+      <!-- <td>{{ row | json }}  </td> -->
+      <!-- <td  > {{row[col]}} </td> -->
+
+      <ng-container *ngFor="let col of columns">
+        <td *ngIf="isPipeApplyOrNot(col); else normalData">
+          {{ row[col] | myPipe : "Upper" }}
+        </td>
+        <ng-template #normalData>
+          <td>{{ row[col] }}</td>
+        </ng-template>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>

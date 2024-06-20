@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 
 <h1>Users in our site is</h1>
-
+<!-- 
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -12,18 +12,31 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
+    <tr *ngFor="let user of users; let i = index">
+      <td>{{ user| json }}</td>
       <td>{{user.gender| myPipe:'Identify' }}  {{ user.name | myPipe:'Upper' }}</td>
       <td>{{ user.salary | myPipe:'toCurrency' }}</td>
       <td>{{ user.age }}</td>
+     
+
+       
     </tr>
   </tbody>
-</table>
+</table> -->
 
 <hr />
 <!-- <button class="btn btn-primary" (click)="addUserToList()">Add User</button> -->
 
+<button [routerLink]="['/userReg', 0]" class="btn btn-danger m-2">
+  Add User using template driven form
+</button>
+<button [routerLink]="['/userReg', 1]" class="btn btn-success m-2">
+  Add User using reactive form
+</button>
 
-<button [routerLink]="['/userReg',0]" class="btn btn-danger m-2">Add User using template driven form</button>
-<button [routerLink]="['/userReg',1]" class="btn btn-success m-2">Add User using reactive form</button>
+<app-common-grid
+  [columns]="columnsGrid"
+  [data]="dataRow"
+  [pipecolumns]="pipecolumn"
+>
+</app-common-grid>
