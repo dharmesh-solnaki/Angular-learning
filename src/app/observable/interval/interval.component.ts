@@ -16,7 +16,7 @@ ngOnInit(): void {
   const bradCastVideos = timer(100,1000)
 
   this.videoSubscription =  bradCastVideos.subscribe(res=> {
-    this.obsMsg = "Video " + res;
+    this.obsMsg = `Videos ${res}`;
     
     if(res>=5){
       this.videoSubscription.unsubscribe();

@@ -27,6 +27,13 @@ import { FromEventComponent } from './observable/from-event/from-event.component
 import { DesignUtilityService } from './appServices/design-utility.service';
 import { IntervalComponent } from './observable/interval/interval.component';
 import { OfFromComponent } from './observable/of-from/of-from.component';
+import { EmployeeComponent } from './employee/employee.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { EmployeeService } from './employee/employee.service';
+import { RequestInterceptorService } from './Interceptors/reqInterceptor.service';
+import { ResponseInterceptorService } from './Interceptors/resInterceptor.service';
+import { PageNotFoundComponent } from './Shared/pagenotfound.component';
+
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
@@ -39,14 +46,21 @@ const appRoutes: Routes = [
   { path: 'userReg/:type', component: UserRegistrationComponent },
   { path: 'ShoppingLists', component: ShoppingListComponent },
   {
+    path: 'employee',
+    component: EmployeeComponent
+  },
+  {
     path: 'observables',
     component: ObservableComponent,
     children: [
       { path: '', component: AllComponent },
       { path: 'fromEvent', component: FromEventComponent },
-       { path: 'interval', component: IntervalComponent }, { path: 'ofFrom', component: OfFromComponent },
+      { path: 'interval', component: IntervalComponent },
+      { path: 'ofFrom', component: OfFromComponent },
     ],
   },
+  { path:'**',component:PageNotFoundComponent}
+
 ];
 
 @NgModule({
@@ -73,14 +87,23 @@ const appRoutes: Routes = [
     FromEventComponent,
     IntervalComponent,
     OfFromComponent,
+    EmployeeComponent,
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
+    HttpClientModule,
   ],
-  providers: [ShoppingListService, UserService, DesignUtilityService],
+  providers: [
+    ShoppingListService,
+    UserService,
+    DesignUtilityService,
+    EmployeeService,
+    {provide:HTTP_INTERCEPTORS,useClass:RequestInterceptorService,multi:true},   {provide:HTTP_INTERCEPTORS,useClass:ResponseInterceptorService,multi:true}
+  ],
   exports: [FormsModule],
   bootstrap: [AppComponent],
 })

@@ -1,7 +1,7 @@
 <table class="table table-responsive">
   <thead>
     <tr>
-      <th *ngFor="let col of columns">{{ col }}</th>
+      <th  *ngFor="let col of columns">{{ col }}</th>
     </tr>
   </thead>
   <tbody>
@@ -11,11 +11,21 @@
 
       <ng-container *ngFor="let col of columns">
         <td *ngIf="isPipeApplyOrNot(col); else normalData">
-          {{ row[col] | myPipe : "Upper" }}
+          {{ row[col] | myPipe : "Upper" }}       
         </td>
+
+      
         <ng-template #normalData>
-          <td>{{ row[col] }}</td>
+          <td>{{ row[col] }}
+          
+            <span *ngIf="doesHaveActions(col)">
+              <button class="m-2 btn btn-info" >Edit</button>
+              <button class="m-2 btn btn-danger">Delete</button>
+             </span>
+          </td>
         </ng-template>
+
+        
       </ng-container>
     </tr>
   </tbody>
