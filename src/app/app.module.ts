@@ -33,7 +33,7 @@ import { EmployeeService } from './employee/employee.service';
 import { RequestInterceptorService } from './Interceptors/reqInterceptor.service';
 import { ResponseInterceptorService } from './Interceptors/resInterceptor.service';
 import { PageNotFoundComponent } from './Shared/pagenotfound.component';
-
+import { activeRouteGuard } from './Guards/active-route.guard';
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
@@ -47,7 +47,13 @@ const appRoutes: Routes = [
   { path: 'ShoppingLists', component: ShoppingListComponent },
   {
     path: 'employee',
-    component: EmployeeComponent
+    component: EmployeeComponent,
+    canActivate: [activeRouteGuard],
+    canDeactivate: [
+      (com: EmployeeComponent) => {
+        return com.canExit();
+      },
+    ],
   },
   {
     path: 'observables',
@@ -59,8 +65,7 @@ const appRoutes: Routes = [
       { path: 'ofFrom', component: OfFromComponent },
     ],
   },
-  { path:'**',component:PageNotFoundComponent}
-
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
@@ -88,7 +93,6 @@ const appRoutes: Routes = [
     IntervalComponent,
     OfFromComponent,
     EmployeeComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -102,7 +106,16 @@ const appRoutes: Routes = [
     UserService,
     DesignUtilityService,
     EmployeeService,
-    {provide:HTTP_INTERCEPTORS,useClass:RequestInterceptorService,multi:true},   {provide:HTTP_INTERCEPTORS,useClass:ResponseInterceptorService,multi:true}
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptorService,
+      multi: true,
+    },
   ],
   exports: [FormsModule],
   bootstrap: [AppComponent],

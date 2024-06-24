@@ -29,9 +29,10 @@ export class UserRegistrationComponent {
   ) {
     this.userRegistationForm = this.formBuilder.group({
       Name: ['', Validators.required],
-      Age: ['', [Validators.required, Validators.min(16), Validators.max(100)]], // Adjusted validators
+      Age: ['', [Validators.required, Validators.min(16), Validators.max(100)]], 
       Gender: ['', Validators.required],
       Salary: ['', Validators.required],
+     
     });
   }
 
