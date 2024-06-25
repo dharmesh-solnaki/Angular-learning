@@ -34,6 +34,10 @@ import { RequestInterceptorService } from './Interceptors/reqInterceptor.service
 import { ResponseInterceptorService } from './Interceptors/resInterceptor.service';
 import { PageNotFoundComponent } from './Shared/pagenotfound.component';
 import { activeRouteGuard } from './Guards/active-route.guard';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { EmployeeState } from './Store/state/employee.state';
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
@@ -73,7 +77,6 @@ const appRoutes: Routes = [
     AppComponent,
     HeaderComponent,
     RecipesComponent,
-
     ReacipeListComponent,
     ReacipeDetailComponent,
     RecipeItemsComponent,
@@ -100,12 +103,16 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
+    NgxsModule.forRoot([EmployeeState]), 
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
     ShoppingListService,
     UserService,
     DesignUtilityService,
     EmployeeService,
+  
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptorService,
@@ -116,6 +123,7 @@ const appRoutes: Routes = [
       useClass: ResponseInterceptorService,
       multi: true,
     },
+ 
   ],
   exports: [FormsModule],
   bootstrap: [AppComponent],

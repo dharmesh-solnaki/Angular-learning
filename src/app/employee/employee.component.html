@@ -6,13 +6,35 @@
 >
 </app-common-grid> -->
 
-<div class="d-flex mt-5 justify-content-end">
-  <!-- <button  class="btn btn-info" (click)="postEmployee()">
-        Add User
-    </button> -->
+<div class="d-flex mt-5 justify-content-between align-items-center">
+  <div>
+    <strong> Search : </strong>
+    <input type="text" #inputsearch />
+
+    <button
+      class="btn btn-info m-2 text-white"
+      type="button"
+      (click)="onSearchClick(inputsearch.value)"
+    >
+      search
+    </button>
+  </div>
+
+  <button
+    type="button"
+    (click)="hadleClickType('add', null)"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    Add Employee
+  </button>
 </div>
 
-<table class="mt-5 table table-responsive table-bordered">
+<table
+  class="mt-5 table table-responsive table-bordered"
+  *ngIf="employees.length > 0; else noRecordsTemplate"
+>
   <thead>
     <th *ngFor="let item of columns">
       {{ item }}
@@ -24,8 +46,8 @@
                 {{item[col]}}
             </td> -->
 
-      <td>{{ item.firstName }}</td>
-      <td>{{ item.lastName }}</td>
+      <td>{{ item.firstName }} {{ item.lastName }}</td>
+
       <td>{{ item.email }}</td>
       <td>{{ item.phone }}</td>
       <td>{{ item.gender }}</td>
@@ -47,17 +69,6 @@
   </tbody>
 </table>
 
-<!-- Button trigger modal -->
-<button
-  type="button"
-  (click)="hadleClickType('add', null)"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#exampleModal"
->
-  Add Employee
-</button>
-
 <!-- Modal -->
 <div
   class="modal fade"
@@ -69,7 +80,9 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Employee</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          {{ formSubmitType }} Employee
+        </h1>
         <button
           type="button"
           #addEmployeeCloseBtn
@@ -192,12 +205,12 @@
           <div class="mb-3">
             <label for="phone" class="form-label">Phone:</label>
             <input
-              type="number  "
+              type="text"
               id="phone"
               formControlName="phone"
               class="form-control"
               maxlength="10"
-              (keydown)="hadleTheFocus('phone')"
+              (input)="hadleTheFocus('phone')"
             />
             <div *ngIf="hasError('phone', 'required')" class="text-danger">
               Mobile Number is required
@@ -263,3 +276,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #noRecordsTemplate>
+  <div class="alert alert-warning" role="alert">No record found</div>
+</ng-template>

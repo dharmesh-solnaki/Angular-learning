@@ -1,9 +1,17 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { EmployeeService } from './employee.service';
 import { Employee } from './employee.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeConstants, validationRegexes } from '../Shared/constants';
 import { validatePasswords } from '../Shared/Validators/passwordMatch';
+import { Select, Store } from '@ngxs/store';
+import {
+  AddEmployee,
+  DeleteEmployee,
+  GetEmployee,
+  UpdateEmployee,
+} from '../Store/actions/employee.actions';
+import { Observable, Subscription } from 'rxjs';
+import { EmployeeState } from '../Store/state/employee.state';
 
 @Component({
   selector: 'app-employee',
@@ -18,16 +26,13 @@ import { validatePasswords } from '../Shared/Validators/passwordMatch';
 })
 export class EmployeeComponent {
   employees: Employee[] = [];
+
+  @Select(EmployeeState.getEmployees) employees$: Observable<Employee[]>;
+  @Select(EmployeeState.getEmployeeLoaded) employeeLoaded$: Observable<boolean>;
+  emloyeeSub: Subscription;
+
   editableEmployee: Employee = null;
-  columns: string[] = [
-    'firstName',
-    'lastName',
-    'email',
-    'phone',
-    'gender',
-    'city',
-    'actions',
-  ];
+  columns: string[] = ['Name', 'email', 'phone', 'gender', 'city', 'actions'];
   hasAction: string[] = ['actions'];
 
   employeeForm: FormGroup;
@@ -35,10 +40,7 @@ export class EmployeeComponent {
   formSubmitType: string;
   @ViewChild('addEmployeeCloseBtn') closebtn: ElementRef;
 
-  constructor(
-    private _employeeservice: EmployeeService,
-    private _formBuilder: FormBuilder
-  ) {
+  constructor(private _formBuilder: FormBuilder, private _store: Store) {
     this.employeeForm = this._formBuilder.group(
       {
         firstName: ['', [Validators.required, Validators.maxLength(20)]],
@@ -94,14 +96,22 @@ export class EmployeeComponent {
   }
 
   ngOnInit(): void {
-    this.getAllEmployees();
+    this.employees$.subscribe((res) => {
+      this.employees = res;
+    });
+    this.getAllEmployees('');
   }
 
-  getAllEmployees() {
-    this._employeeservice.getAllEmployees().subscribe(
-      (res) => (this.employees = res),
-      (err) => console.error('Error Hadler ', err)
-    );
+  getAllEmployees(searchtext: string) {
+    // this._employeeservice.getAllEmployees().subscribe(
+    //   (res) => (this.employees = res),
+    //   (err) => console.error('Error Hadler ', err)
+    // );
+    this.emloyeeSub = this.employeeLoaded$.subscribe((res) => {
+      if (!res) {
+        this._store.dispatch(new GetEmployee(searchtext));
+      }
+    });
   }
 
   hadleClickType(type: string, item) {
@@ -133,23 +143,26 @@ export class EmployeeComponent {
       this.employeeForm.value.email,
       this.employeeForm.value.phone,
       this.employeeForm.value.gender,
-      this.employeeForm.value.city
+      this.employeeForm.value.city,
+      null
     );
 
     if (this.formSubmitType == EmployeeConstants.ADD_EMPLOYEE) {
-      this._employeeservice.createNewEmployee(newEmployee).subscribe(
-        (res) => this.employees.push(res),
-        (err) => console.error('Error Hadler ', err)
-      );
+      // this._employeeservice.createNewEmployee(newEmployee).subscribe(
+      //   (res) => this.employees.push(res),
+      //   (err) => console.error('Error Hadler ', err)
+      // );
+      this._store.dispatch(new AddEmployee(newEmployee));
       this.employeeForm.reset();
       alert('New Employee Added Successfully');
     } else {
-      this._employeeservice
-        .updateEmployee(this.employeeId, newEmployee)
-        .subscribe(
-          () => this.getAllEmployees(),
-          (err) => console.error('Error Hadler ', err)
-        );
+      // this._employeeservice
+      //   .updateEmployee(this.employeeId, newEmployee)
+      //   .subscribe(
+      //     () => this.getAllEmployees(),
+      //     (err) => console.error('Error Hadler ', err)
+      //   );
+      this._store.dispatch(new UpdateEmployee(this.employeeId, newEmployee));
       alert('Employee updated Successfully');
     }
 
@@ -164,10 +177,11 @@ export class EmployeeComponent {
   deleteEmployee(id: number) {
     const ans = confirm('Are you sure , you want to delete this record?');
     if (ans) {
-      this._employeeservice.deleteEmployee(id).subscribe(
-        () => this.getAllEmployees(),
-        (err) => console.error('Error Hadler ', err)
-      );
+      // this._employeeservice.deleteEmployee(id).subscribe(
+      //   () => this.getAllEmployees(),
+      //   (err) => console.error('Error Hadler ', err)
+      // );
+      this._store.dispatch(new DeleteEmployee(id));
       alert('Employee deleted Successfully');
     }
   }
@@ -178,16 +192,22 @@ export class EmployeeComponent {
     );
     return res;
   }
-
   hadleTheFocus(field: string) {
-    const inputValue = this.employeeForm.controls[field].value;
-    const isvalid = new RegExp('/D/g');
-    if (!isvalid.test(inputValue) && inputValue) {
-      this.employeeForm.controls[field].setValue(
-        inputValue.replace(/[^0-9]/g, '')
-      );
+    let inputValue = this.employeeForm.get(field).value;
+  
+    if (inputValue) {
+      inputValue = inputValue.replace(/\D/g, '');
+      this.employeeForm.controls[field].setValue(inputValue);
     }
+    
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.emloyeeSub.unsubscribe();
   }
 
-  checkTheRegex() {}
+  onSearchClick(searchText: string) {
+    this.getAllEmployees(searchText);
+  }
 }

@@ -1,6 +1,6 @@
 export const EmployeeConstants={
-    ADD_EMPLOYEE:'addEmployee',
-    EDIT_EMPLOYEE:'editEmployee'
+    ADD_EMPLOYEE:'Add',
+    EDIT_EMPLOYEE:'Edit'
   }
 
   export const validationRegexes = {

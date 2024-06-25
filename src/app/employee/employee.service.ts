@@ -4,7 +4,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
-import { Employee } from './employee.model';
+import { Employee, employeeToEmployeeDto } from './employee.model';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 @Injectable({
@@ -15,23 +15,28 @@ export class EmployeeService {
 
   constructor(private _http: HttpClient) {}
 
-  getAllEmployees(): Observable<Employee[]> {
+  getAllEmployees(searchtext): Observable<Employee[]> {
+
+    const modifiledUrl = `${this.EMPLOYEE_URL}?searchString=${searchtext}`;
+    console.log(modifiledUrl)
     return this._http
-      .get<Employee[]>(this.EMPLOYEE_URL)
+      .get<Employee[]>(modifiledUrl)
       .pipe(catchError(this.handleError));
   }
 
   createNewEmployee(Employee: Employee): Observable<Employee> {
     const header = new HttpHeaders().set('Content-Type', 'application/Json');
     const options = { headers: header };
+    const  dtoEmployee = employeeToEmployeeDto(Employee);
     return this._http
-      .post<Employee>(this.EMPLOYEE_URL, Employee, options)
+      .post<Employee>(this.EMPLOYEE_URL, dtoEmployee, options)
       .pipe(catchError(this.handleError));
   }
 
   updateEmployee(id: number, Employee: Employee) {
+    const dtoEmployee = employeeToEmployeeDto(Employee)
     return this._http
-      .put<Employee>(`${this.EMPLOYEE_URL}/${id}`, Employee)
+      .put<Employee>(`${this.EMPLOYEE_URL}/${id}`, dtoEmployee)
       .pipe(catchError(this.handleError));
   }
 
