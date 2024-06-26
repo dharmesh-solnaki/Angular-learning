@@ -22,14 +22,5 @@ export class HeaderComponent implements OnInit {
   onSelect(feature: string) {
     this.featureSelected.emit(feature);
   }
-  handleLogin() {
-    const Token = localStorage.getItem('Token');
-    if (Token) {
-      this.statusText = 'Login';
-      localStorage.removeItem('Token');
-    } else {
-      this.statusText = 'Logout';
-      localStorage.setItem('Token', 'djkasdh76235');
-    }
-  }
+
 }

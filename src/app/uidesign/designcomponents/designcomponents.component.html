@@ -1,0 +1,71 @@
+<p>
+  <mat-toolbar class="mt-5" color="primary">
+    <span>My Application</span>
+  </mat-toolbar>
+</p>
+
+<div class="d-lg-flex justify-content-around gap-3 align-items-center">
+  <form class="row w-25" [formGroup]="demoForm" (ngSubmit)="formHandler()">
+    <mat-form-field class="col-12">
+      <mat-label>Input</mat-label>
+      <input matInput type="text" formControlName="name" />
+    </mat-form-field>
+    <mat-form-field class="col-12">
+      <mat-label>Select</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="male">male</mat-option>
+        <mat-option value="female">female</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-12">
+      <mat-label>Textarea</mat-label>
+      <textarea matInput formControlName="note"></textarea>
+    </mat-form-field>
+    <mat-form-field class="col-12">
+
+        <mat-label>Birth date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthDate"/>
+   
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+    </mat-form-field>
+    <button type="submit" class="col-2 ms-5" mat-raised-button color="primary">
+      Submit
+    </button>
+  </form>
+
+  <mat-card class="example-card w-50">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Shiba Inu</mat-card-title>
+      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      class="ms-3"
+      mat-card-lg-image
+      src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-content>
+      <p>
+        The Shiba Inu is the smallest of the six original and distinct spitz
+        breeds of dog from Japan. A small, agile dog that copes very well with
+        mountainous terrain, the Shiba Inu was originally bred for hunting.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-chip-listbox aria-label="Fish selection" class="w-25">
+    <mat-chip-option>One fish</mat-chip-option>
+    <mat-chip-option>Two fish</mat-chip-option>
+    <mat-chip-option color="accent" selected>Accent fish</mat-chip-option>
+    <mat-chip-option color="warn">Warn fish</mat-chip-option>
+  </mat-chip-listbox>
+</div>

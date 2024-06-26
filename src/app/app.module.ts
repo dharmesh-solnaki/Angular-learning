@@ -38,9 +38,16 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { EmployeeState } from './Store/state/employee.state';
+import { UidesignModule } from './uidesign/uidesign.module';
+import { UidesignComponent } from './uidesign/uidesign.component';
+import { DesigncomponentsComponent } from './uidesign/designcomponents/designcomponents.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginComponent } from './Auth/login/login.component';
 
 const appRoutes: Routes = [
+  
   { path: '', component: AppComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'recipes', component: RecipesComponent },
   {
     path: 'users',
@@ -67,6 +74,16 @@ const appRoutes: Routes = [
       { path: 'fromEvent', component: FromEventComponent },
       { path: 'interval', component: IntervalComponent },
       { path: 'ofFrom', component: OfFromComponent },
+    ],
+  },
+  {
+    path: 'design',
+    component: UidesignComponent,
+    children: [
+      {
+        path: '',
+        component: DesigncomponentsComponent,
+      },
     ],
   },
   { path: '**', component: PageNotFoundComponent },
@@ -96,6 +113,7 @@ const appRoutes: Routes = [
     IntervalComponent,
     OfFromComponent,
     EmployeeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,16 +121,18 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
-    NgxsModule.forRoot([EmployeeState]), 
+    NgxsModule.forRoot([EmployeeState]),
     NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot()
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    UidesignModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     ShoppingListService,
     UserService,
     DesignUtilityService,
     EmployeeService,
-  
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptorService,
@@ -123,7 +143,6 @@ const appRoutes: Routes = [
       useClass: ResponseInterceptorService,
       multi: true,
     },
- 
   ],
   exports: [FormsModule],
   bootstrap: [AppComponent],

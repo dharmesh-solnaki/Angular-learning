@@ -12,6 +12,7 @@ import {
 } from '../Store/actions/employee.actions';
 import { Observable, Subscription } from 'rxjs';
 import { EmployeeState } from '../Store/state/employee.state';
+import { EmployeeService } from './employee.service';
 
 @Component({
   selector: 'app-employee',
@@ -40,7 +41,7 @@ export class EmployeeComponent {
   formSubmitType: string;
   @ViewChild('addEmployeeCloseBtn') closebtn: ElementRef;
 
-  constructor(private _formBuilder: FormBuilder, private _store: Store) {
+  constructor(private _formBuilder: FormBuilder, private _store: Store, private _employeeservice:EmployeeService) {
     this.employeeForm = this._formBuilder.group(
       {
         firstName: ['', [Validators.required, Validators.maxLength(20)]],
@@ -103,15 +104,15 @@ export class EmployeeComponent {
   }
 
   getAllEmployees(searchtext: string) {
-    // this._employeeservice.getAllEmployees().subscribe(
-    //   (res) => (this.employees = res),
-    //   (err) => console.error('Error Hadler ', err)
-    // );
-    this.emloyeeSub = this.employeeLoaded$.subscribe((res) => {
-      if (!res) {
-        this._store.dispatch(new GetEmployee(searchtext));
-      }
-    });
+    this._employeeservice.getAllEmployees(searchtext).subscribe(
+      (res) => (this.employees = res),
+      (err) => console.error('Error Hadler from employee component : ', err)
+    );
+    // this.emloyeeSub = this.employeeLoaded$.subscribe((res) => {
+    //   if (!res) {
+    //     this._store.dispatch(new GetEmployee(searchtext));
+    //   }
+    // });
   }
 
   hadleClickType(type: string, item) {

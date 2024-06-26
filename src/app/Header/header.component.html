@@ -45,25 +45,20 @@
             class="text-decoration-none text-dark btn btn-outline-danger"
             >Employee</a
           >
+        </li> 
+         <li class="nav-item ms-2">
+          <a
+            [routerLink]="['/design']"
+            class="text-decoration-none text-dark btn btn-danger"
+            >Material-UI</a
+          >
         </li>
       </ul>
-      <div class="dropdown navbar-right">
-        <button class="btn btn-info text-white" (click)="handleLogin()">{{statusText}}</button>
-        <a
-          class="dropdown-toggle text-decoration-none text-dark me-5"
-          type="button"
-          id="triggerId"
-          data-bs-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Manage
-        </a>
-        <div class="dropdown-menu" aria-labelledby="triggerId">
-          <a class="dropdown-item" href="#">Save Data</a>
-          <a class="dropdown-item" href="#"> Fetch Data </a>
-        </div>
-      </div>
+       
+
+      <button class="btn btn-info" [routerLink]="['/login']">
+             Login
+      </button>
     </div>
   </div>
 </nav>

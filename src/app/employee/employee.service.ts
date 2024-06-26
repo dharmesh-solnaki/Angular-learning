@@ -1,9 +1,9 @@
 import {
   HttpClient,
-  HttpErrorResponse,
+
   HttpHeaders,
 } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Employee, employeeToEmployeeDto } from './employee.model';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
@@ -21,7 +21,7 @@ export class EmployeeService {
     console.log(modifiledUrl)
     return this._http
       .get<Employee[]>(modifiledUrl)
-      .pipe(catchError(this.handleError));
+      // .pipe(catchError(this.handleError));
   }
 
   createNewEmployee(Employee: Employee): Observable<Employee> {
@@ -30,32 +30,32 @@ export class EmployeeService {
     const  dtoEmployee = employeeToEmployeeDto(Employee);
     return this._http
       .post<Employee>(this.EMPLOYEE_URL, dtoEmployee, options)
-      .pipe(catchError(this.handleError));
+      // .pipe(catchError(this.handleError));
   }
 
   updateEmployee(id: number, Employee: Employee) {
     const dtoEmployee = employeeToEmployeeDto(Employee)
     return this._http
       .put<Employee>(`${this.EMPLOYEE_URL}/${id}`, dtoEmployee)
-      .pipe(catchError(this.handleError));
+      // .pipe(catchError(this.handleError));
   }
 
   deleteEmployee(id: number) {
     return this._http
       .delete(`${this.EMPLOYEE_URL}/${id}`)
-      .pipe(catchError(this.handleError));
+      // .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'Unknown error occurred';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.error(errorMessage);
-    throw Error(errorMessage);
-  }
+  // private handleError(error: HttpErrorResponse): Observable<never> {
+  //   let errorMessage = 'Unknown error occurred';
+  //   if (error.error instanceof ErrorEvent) {
+  //     // Client-side error
+  //     errorMessage = `Error: ${error.error.message}`;
+  //   } else {
+  //     // Server-side error
+  //     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  //   }
+  //   // console.error(error);
+  //  return throwError(()=> ` something went wrong! details: ${errorMessage}`);
+  // }
 }
