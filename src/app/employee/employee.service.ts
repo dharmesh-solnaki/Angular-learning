@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Employee, employeeToEmployeeDto } from './employee.model';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
+import {  LoginResponseModel } from '../Auth/login/login.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,8 +13,7 @@ export class EmployeeService {
   constructor(private _http: HttpClient) {}
 
   getAllEmployees(searchtext): Observable<Employee[]> {
-    const modifiledUrl = `${this.EMPLOYEE_URL}?searchString=${searchtext}`;
-    console.log(modifiledUrl);
+    const modifiledUrl = `${this.EMPLOYEE_URL}?searchString=${searchtext}`;  
     return this._http.get<Employee[]>(modifiledUrl)
     // .pipe(catchError(this.handleError));
   }
@@ -37,10 +37,10 @@ export class EmployeeService {
     // .pipe(catchError(this.handleError));
   }
 
-  authEmployee(authDetails: { email: string; password: string }) {
-    const header = new HttpHeaders().set('Content-Type', 'application/Json');
+  authEmployee(authDetails: { email: string; password: string }):Observable<LoginResponseModel> {
+    const header = new HttpHeaders().set('skip', 'true');
     const options = { headers: header };
-    return this._http.post(
+    return this._http.post<LoginResponseModel>(
       `${this.EMPLOYEE_URL}/authUser`,
       authDetails,
       options

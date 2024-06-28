@@ -6,7 +6,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, switchScan, tap } from 'rxjs/operators';
 import { Employee } from '../employee/employee.model';
 
 export class ResponseInterceptorService implements HttpInterceptor {
@@ -15,28 +15,40 @@ export class ResponseInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<any> {
     return next.handle(req).pipe(
-      tap((event) => {
-        if (event.type === HttpEventType.Response) {
-             console.log(event.body
-              
-             )
-         }    
-
-      }),
+    
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Unknown error occurred';
-        if (error.error instanceof ErrorEvent) {
-          // client-side error
-          errorMessage = `Error: ${error.error.message}`;
-        } else {
-          // Server-side err
+        let errorMssg = 'Unknown error';
+        switch (error.status) {
+          case 400:
+            errorMssg = 'Bad Request';
+            break;
+          case 401:
+            errorMssg = 'Unauthorized';
+            break;
+          case 403:
+            errorMssg = 'Forbidden by server';
+            break;
+          case 404:
+            errorMssg = 'Not Found';
+            break;
+          case 500:
+            errorMssg = 'Internal Server Error';
+            break;
 
-          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+          default:
+            // Default case for other HTTP errors
+            errorMssg = 'Client-side error or unknown server error';
+            break;
         }
-        console.error('Error occurred in interceptor:', error);
-
-        return throwError(() => `Something went wrong: ${error} `);
+        if (error.error instanceof ErrorEvent) {
+          // Client-side error
+          errorMssg = `Client Error: ${error.error.message}`;
+        } else if (error.error && error.error.message) {
+          // Server-side error with message
+          errorMssg = error.error.message;
+        }
+        return throwError(() => errorMssg);
       })
-    );
+    );  
   }
 }

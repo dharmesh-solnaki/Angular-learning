@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { confirmMessages } from '../Shared/constants';
 
 @Component({
   selector: 'app-header',
@@ -16,24 +17,22 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   @Output() featureSelected = new EventEmitter<string>();
-   get loginStatus():boolean{
-    return localStorage.getItem('authToken')?true:false;
-   }
-
-  constructor( private _router:Router){}
-
-  ngOnInit(): void {
-     
+  get loginStatus(): boolean {
+    return localStorage.getItem('authToken') ? true : false;
   }
+
+  constructor(private _router: Router) {}
+
+  ngOnInit(): void {}
   onSelect(feature: string) {
     this.featureSelected.emit(feature);
   }
 
-  onLogout(){
-    
-    localStorage.removeItem('authToken');
-    // this.loginStatus=false
-  this._router.navigate(['/login'])
+  onLogout() {
+    const ans = confirm(confirmMessages.LOGOUT_CONFIRMATION);
+    if (ans) {
+      localStorage.removeItem('authToken');      
+      this._router.navigate(['/login']);
+    }
   }
-
 }

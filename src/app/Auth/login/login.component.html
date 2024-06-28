@@ -1,42 +1,57 @@
-  <div
-    class="container d-flex justify-content-center flex-column align-items-center bg-dark  bg-opacity-25  my-3 p-0"
-  >
-    <div class=" mb-5 row py-3 bg-dark w-100 ">
-      <span class="fs-3 d-block text-warning col-6 me-1 text-end ">
-        Login
-      </span>
-      <span class="text-white ms-auto col-4 text-end "> </span>
-    </div>
-    <form [formGroup]="loginForm" class="form"  (submit)="loginHandler()">
-      <div class="form-floating mb-3">
-        <input
-          type="text"
-          class="form-control"
-          formControlName="email"
-          placeholder=""/>
-        <label>email</label>
-        
-        <div *ngIf="hasError('email', 'required')" class="text-danger">
-          email is required
-        </div>
-        <div *ngIf="hasError('email', 'maxlength')" class="text-danger">
-          Maximum 50 characters allowed.
-        </div>  
-           <div *ngIf="hasError('email', 'pattern')" class="text-danger">
-             Invalid fromat.            
-        </div>
-      </div>
-      <div class="form-floating mb-3">
-        <input type="password" class="form-control" placeholder="" formControlName="password" />
-        <label>Password</label>
-        <div *ngIf="hasError('password', 'required')" class="text-danger">
-          Password is required.
-        </div>
-        <div *ngIf="hasError('password', 'minlength')" class="text-danger">
-          Must be length of 8 characters.
-        </div>
-      </div>
-
-      <button class="btn btn-warning mx-5 mb-3">Login</button>
-    </form>
+<div
+  class="container d-flex justify-content-center flex-column align-items-center bg-dark bg-opacity-25 my-3 p-0"
+>
+  <div class="mb-5 row py-3 bg-dark w-100">
+    <span class="fs-3 d-block text-warning col-6 me-1 text-end"> Login </span>
+    <span class="text-white ms-auto col-4 text-end"> </span>
   </div>
+  <form [formGroup]="loginForm" class="form" (submit)="loginHandler()">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="email"
+        placeholder=""
+        [ngClass]="{
+          'border-danger':
+            hasError('email', 'required') ||
+            hasError('email', 'maxlength') ||
+            hasError('email', 'pattern')
+        }"
+      />
+      <label>email</label>
+
+      <div *ngIf="hasError('email', 'required')" class="text-danger">
+        email is required
+      </div>
+      <div *ngIf="hasError('email', 'maxlength')" class="text-danger">
+        Maximum 50 characters allowed.
+      </div>
+      <div *ngIf="hasError('email', 'pattern')" class="text-danger">
+        Invalid fromat.
+      </div>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="password"
+        class="form-control"
+        placeholder=""
+        formControlName="password"
+        [ngClass]="{
+          'border-danger':
+            hasError('password', 'required') ||
+            hasError('password', 'minlength')
+        }"
+      />
+      <label>Password</label>
+      <div *ngIf="hasError('password', 'required')" class="text-danger">
+        Password is required.
+      </div>
+      <div *ngIf="hasError('password', 'minlength')" class="text-danger">
+        Must be length of 8 characters.
+      </div>
+    </div>
+
+    <button class="btn btn-warning mx-5 mb-3">Login</button>
+  </form>
+</div>

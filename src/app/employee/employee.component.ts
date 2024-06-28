@@ -1,13 +1,17 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Employee } from './employee.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeConstants, validationRegexes } from '../Shared/constants';
+import {
+  EmployeeConstants,
+  alertMessages,
+  confirmMessages,
+  validationRegexes,
+} from '../Shared/constants';
 import { validatePasswords } from '../Shared/Validators/passwordMatch';
 import { Select, Store } from '@ngxs/store';
 import {
   AddEmployee,
-  DeleteEmployee,
-  GetEmployee,
+  DeleteEmployee, 
   UpdateEmployee,
 } from '../Store/actions/employee.actions';
 import { Observable, Subscription } from 'rxjs';
@@ -41,7 +45,11 @@ export class EmployeeComponent {
   formSubmitType: string;
   @ViewChild('addEmployeeCloseBtn') closebtn: ElementRef;
 
-  constructor(private _formBuilder: FormBuilder, private _store: Store, private _employeeservice:EmployeeService) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _store: Store,
+    private _employeeservice: EmployeeService
+  ) {
     this.employeeForm = this._formBuilder.group(
       {
         firstName: ['', [Validators.required, Validators.maxLength(20)]],
@@ -105,8 +113,8 @@ export class EmployeeComponent {
 
   getAllEmployees(searchtext: string) {
     this._employeeservice.getAllEmployees(searchtext).subscribe(
-      (res:any) => (this.employees = res.response),
-      (err) => console.error('Error Hadler from employee component : ', err)
+      (res: any) => (this.employees = res.response),
+      (err) => console.log(err)
     );
     // this.emloyeeSub = this.employeeLoaded$.subscribe((res) => {
     //   if (!res) {
@@ -155,7 +163,7 @@ export class EmployeeComponent {
       // );
       this._store.dispatch(new AddEmployee(newEmployee));
       this.employeeForm.reset();
-      alert('New Employee Added Successfully');
+      alert(alertMessages.RECORD_ADDED);
     } else {
       // this._employeeservice
       //   .updateEmployee(this.employeeId, newEmployee)
@@ -164,7 +172,7 @@ export class EmployeeComponent {
       //     (err) => console.error('Error Hadler ', err)
       //   );
       this._store.dispatch(new UpdateEmployee(this.employeeId, newEmployee));
-      alert('Employee updated Successfully');
+      alert(alertMessages.RECORD_UPDATED);
     }
 
     this.closebtn.nativeElement.click();
@@ -176,31 +184,28 @@ export class EmployeeComponent {
   }
 
   deleteEmployee(id: number) {
-    const ans = confirm('Are you sure , you want to delete this record?');
+    const ans = confirm(confirmMessages.DELETE_CONFIRM);
     if (ans) {
       // this._employeeservice.deleteEmployee(id).subscribe(
       //   () => this.getAllEmployees(),
       //   (err) => console.error('Error Hadler ', err)
       // );
       this._store.dispatch(new DeleteEmployee(id));
-      alert('Employee deleted Successfully');
+      alert(alertMessages.RECORD_DELETED);
     }
   }
 
   canExit() {
-    const res = confirm(
-      'you may have unsaved changes are you sure you want to leave the page?'
-    );
+    const res = confirm(confirmMessages.LEAVE_THE_SITE);
     return res;
   }
   hadleTheFocus(field: string) {
     let inputValue = this.employeeForm.get(field).value;
-  
+
     if (inputValue) {
       inputValue = inputValue.replace(/\D/g, '');
       this.employeeForm.controls[field].setValue(inputValue);
     }
-    
   }
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.

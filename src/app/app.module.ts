@@ -43,6 +43,12 @@ import { UidesignComponent } from './uidesign/uidesign.component';
 import { DesigncomponentsComponent } from './uidesign/designcomponents/designcomponents.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './Auth/login/login.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { CustomeErrorHandler } from './Shared/custome-error-handler.service';
+import { AccessDeniedComponent } from './Shared/access-denied.component';
+import { hasRoleGuardGuard } from './Guards/has-role-guard.guard';
+
+
 
 const appRoutes: Routes = [
   
@@ -59,7 +65,7 @@ const appRoutes: Routes = [
   {
     path: 'employee',
     component: EmployeeComponent,
-    canActivate: [activeRouteGuard],
+    canActivate: [activeRouteGuard, hasRoleGuardGuard],
     canDeactivate: [
       (com: EmployeeComponent) => {
         return com.canExit();
@@ -86,6 +92,7 @@ const appRoutes: Routes = [
       },
     ],
   },
+  { path: 'access-denied', component: AccessDeniedComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -114,6 +121,9 @@ const appRoutes: Routes = [
     OfFromComponent,
     EmployeeComponent,
     LoginComponent,
+    AccessDeniedComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -126,13 +136,14 @@ const appRoutes: Routes = [
     NgxsReduxDevtoolsPluginModule.forRoot(),
     UidesignModule,
     BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [
     ShoppingListService,
     UserService,
     DesignUtilityService,
     EmployeeService,
-
+    CustomeErrorHandler,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptorService,
