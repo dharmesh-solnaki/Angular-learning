@@ -105,7 +105,7 @@ export class EmployeeComponent {
 
   getAllEmployees(searchtext: string) {
     this._employeeservice.getAllEmployees(searchtext).subscribe(
-      (res) => (this.employees = res),
+      (res:any) => (this.employees = res.response),
       (err) => console.error('Error Hadler from employee component : ', err)
     );
     // this.emloyeeSub = this.employeeLoaded$.subscribe((res) => {
@@ -205,7 +205,7 @@ export class EmployeeComponent {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    this.emloyeeSub.unsubscribe();
+    // this.emloyeeSub.unsubscribe();
   }
 
   onSearchClick(searchText: string) {

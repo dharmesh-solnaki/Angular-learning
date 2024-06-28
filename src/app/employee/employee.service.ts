@@ -1,9 +1,5 @@
-import {
-  HttpClient,
-
-  HttpHeaders,
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Employee, employeeToEmployeeDto } from './employee.model';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
@@ -16,34 +12,39 @@ export class EmployeeService {
   constructor(private _http: HttpClient) {}
 
   getAllEmployees(searchtext): Observable<Employee[]> {
-
     const modifiledUrl = `${this.EMPLOYEE_URL}?searchString=${searchtext}`;
-    console.log(modifiledUrl)
-    return this._http
-      .get<Employee[]>(modifiledUrl)
-      // .pipe(catchError(this.handleError));
+    console.log(modifiledUrl);
+    return this._http.get<Employee[]>(modifiledUrl)
+    // .pipe(catchError(this.handleError));
   }
 
   createNewEmployee(Employee: Employee): Observable<Employee> {
     const header = new HttpHeaders().set('Content-Type', 'application/Json');
     const options = { headers: header };
-    const  dtoEmployee = employeeToEmployeeDto(Employee);
-    return this._http
-      .post<Employee>(this.EMPLOYEE_URL, dtoEmployee, options)
-      // .pipe(catchError(this.handleError));
+    const dtoEmployee = employeeToEmployeeDto(Employee);
+    return this._http.post<Employee>(this.EMPLOYEE_URL, dtoEmployee, options);
+    // .pipe(catchError(this.handleError));
   }
 
   updateEmployee(id: number, Employee: Employee) {
-    const dtoEmployee = employeeToEmployeeDto(Employee)
-    return this._http
-      .put<Employee>(`${this.EMPLOYEE_URL}/${id}`, dtoEmployee)
-      // .pipe(catchError(this.handleError));
+    const dtoEmployee = employeeToEmployeeDto(Employee);
+    return this._http.put<Employee>(`${this.EMPLOYEE_URL}/${id}`, dtoEmployee);
+    // .pipe(catchError(this.handleError));
   }
 
   deleteEmployee(id: number) {
-    return this._http
-      .delete(`${this.EMPLOYEE_URL}/${id}`)
-      // .pipe(catchError(this.handleError));
+    return this._http.delete(`${this.EMPLOYEE_URL}/${id}`);
+    // .pipe(catchError(this.handleError));
+  }
+
+  authEmployee(authDetails: { email: string; password: string }) {
+    const header = new HttpHeaders().set('Content-Type', 'application/Json');
+    const options = { headers: header };
+    return this._http.post(
+      `${this.EMPLOYEE_URL}/authUser`,
+      authDetails,
+      options
+    );
   }
 
   // private handleError(error: HttpErrorResponse): Observable<never> {

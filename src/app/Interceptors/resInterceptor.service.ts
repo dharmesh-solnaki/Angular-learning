@@ -17,9 +17,11 @@ export class ResponseInterceptorService implements HttpInterceptor {
     return next.handle(req).pipe(
       tap((event) => {
         if (event.type === HttpEventType.Response) {
-          console.log('Response intercepted:', event);
-          console.log('Response headers:', event.headers);
-        }
+             console.log(event.body
+              
+             )
+         }    
+
       }),
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Unknown error occurred';

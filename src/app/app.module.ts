@@ -46,7 +46,7 @@ import { LoginComponent } from './Auth/login/login.component';
 
 const appRoutes: Routes = [
   
-  { path: '', component: AppComponent },
+  //  { path: '', component: AppComponent },
   { path: 'login', component: LoginComponent },
   { path: 'recipes', component: RecipesComponent },
   {

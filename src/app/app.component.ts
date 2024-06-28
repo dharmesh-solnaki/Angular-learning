@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   isLoading: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   // ngOnInit(): void {
   //   //Called after the constructor, initializing input properties, and the first call to ngOnChanges.

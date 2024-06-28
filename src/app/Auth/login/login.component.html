@@ -12,17 +12,17 @@
         <input
           type="text"
           class="form-control"
-          formControlName="username"
+          formControlName="email"
           placeholder=""/>
-        <label>Username</label>
+        <label>email</label>
         
-        <div *ngIf="hasError('username', 'required')" class="text-danger">
-          Username is required
+        <div *ngIf="hasError('email', 'required')" class="text-danger">
+          email is required
         </div>
-        <div *ngIf="hasError('username', 'maxlength')" class="text-danger">
+        <div *ngIf="hasError('email', 'maxlength')" class="text-danger">
           Maximum 50 characters allowed.
         </div>  
-           <div *ngIf="hasError('username', 'pattern')" class="text-danger">
+           <div *ngIf="hasError('email', 'pattern')" class="text-danger">
              Invalid fromat.            
         </div>
       </div>
